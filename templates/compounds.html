@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm">
+    {% for compound in compounds %}
+
+    <h3>
+        <!-- <a href="{{ url_for('compound', id=compound.id) }}">{{ compound.name }}</a> -->
+        {{ compound.name }}
+
+    </h3>
+    <ul>
+   
+    </ul>
+    {% endfor %}
+
+  </div>
+</div>
+
+
+{% endblock %}

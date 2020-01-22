@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+ {% block content %}
+<form class="form" method="POST" action="{{ url_for('compound_add') }}">
+    {{ form.csrf_token }}
+    {{ form.name.label }} {{ form.name(size=20) }}
+    {{ form.percent_concentration.label }} {{ form.percent_concentration(size=20) }}
+    <input type="submit" value="Create">
+</form>
+{% endblock %}

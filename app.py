@@ -1,11 +1,12 @@
 import os
 from dotenv import load_dotenv
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, redirect, jsonify, render_template, url_for
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+from forms import CompoundForm
 
 app = Flask(__name__)
 
@@ -29,6 +30,8 @@ from models import Compound, Terpene, Strain
 
 migrate = Migrate(app, db)
 
+# VIEW FUNCTIONS
+
 
 def get_strain_list():
     strains = Strain.query.order_by(Strain.name.desc()).all()
@@ -37,10 +40,20 @@ def get_strain_list():
 
 def get_strain_object(id):
     strain = Strain.query.get_or_404(id)
-    # strain_html = f'<h3>{strain.name}</h3>'.format(strain.name)
     return render_template("strain.html", strain=strain)
 
 
+def get_compound_list():
+    compounds = Compound.query.all()
+    return render_template("compounds.html", compounds=compounds)
+
+
+def get_compound_object(id):
+    compound = Compound.query.get_or_404(id)
+    return render_template("compound.html", compound=compound)
+
+
+# ROUTES
 @app.route('/strains/', methods=['GET'])
 def strains():
     if request.method == 'GET':
@@ -51,6 +64,33 @@ def strains():
 def strain(id):
     if request.method == 'GET':
         return get_strain_object(id)
+
+
+@app.route('/compounds/', methods=['GET'])
+def compounds():
+    if request.method == 'GET':
+        return get_compound_list()
+
+
+@app.route('/compound/<int:id>/', methods=['GET'])
+def compound(id):
+    if request.method == 'GET':
+        return get_compound_object(id)
+
+
+@app.route('/compounds/add/', methods=['GET', 'POST'])
+def compound_add():
+    form = CompoundForm()
+    # conveience method check if POST and form valid
+    if form.validate_on_submit():
+        compound = Compound()
+        compound.name = form.name.data
+        compound.percent_concentration = form.percent_concentration.data
+
+        db.session.add(compound)
+        db.session.commit()
+        return redirect(url_for('strains'))
+    return render_template('compound_form.html', form=form)
 
 
 if __name__ == '__main__':

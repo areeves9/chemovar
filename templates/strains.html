@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm">
+    {% for strain in strains %}
+
+    <h3>
+        <a href="{{ url_for('strain', id=strain.id) }}">{{ strain.name }}</a>
+    </h3>
+    <ul>
+        {% for terpene in strain.terpenes %}
+
+      <li>{{ terpene.compound.name }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+
+  </div>
+</div>
+
+
+{% endblock %}

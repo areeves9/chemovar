@@ -3,11 +3,11 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
  {% block content %}
- <h1>Create Compound</h1>
-<form method="POST" action="{{ url_for('compound_add') }}">
+ <h1>Create Terpene</h1>
+<form method="POST" action="{{ url_for('terpene_add') }}">
     <div class="form-group">
         {{ form.csrf_token }}
-        {{ wtf.form_field(form.name)}}
+        {{ wtf.form_field(form.compound_id)}}
         
         <input type="submit" value="Create">
     </div>

@@ -5,10 +5,14 @@ from flask import Flask, request, redirect, jsonify, render_template, url_for
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bootstrap import Bootstrap
 
-from forms import CompoundForm
+
+from forms import CompoundForm, TerpeneForm
 
 app = Flask(__name__)
+Bootstrap(app)
+
 
 # configuration with environmetnal variables from python-dotenv
 # This is your Project Root
@@ -85,12 +89,25 @@ def compound_add():
     if form.validate_on_submit():
         compound = Compound()
         compound.name = form.name.data
-        compound.percent_concentration = form.percent_concentration.data
 
         db.session.add(compound)
         db.session.commit()
-        return redirect(url_for('strains'))
+        return redirect(url_for('compounds'))
     return render_template('compound_form.html', form=form)
+
+
+@app.route('/terpenes/add/', methods=['GET', 'POST'])
+def terpene_add():
+    form = TerpeneForm()
+    # conveience method check if POST and form valid
+    if form.validate_on_submit():
+        terpene = Terpene()
+        terpene.compound_id = form.compound_id.data
+
+        db.session.add(terpene)
+        db.session.commit()
+        return redirect(url_for('terpenes'))
+    return render_template('terpene_form.html', form=form)
 
 
 if __name__ == '__main__':

@@ -7,8 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 
-
 from forms import CompoundForm, TerpeneForm
+
+
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -30,9 +31,8 @@ if app.config['ENV'] == 'development':
 
 db = SQLAlchemy(app)
 
-from models import Compound, Terpene, Strain
-
 migrate = Migrate(app, db)
+
 
 # VIEW FUNCTIONS
 
@@ -103,12 +103,12 @@ def terpene_add():
     if form.validate_on_submit():
         terpene = Terpene()
         terpene.compound_id = form.compound_id.data
-
         db.session.add(terpene)
         db.session.commit()
         return redirect(url_for('terpenes'))
     return render_template('terpene_form.html', form=form)
 
-
 if __name__ == '__main__':
     app.run()
+
+from models import Compound, Terpene, Strain

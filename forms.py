@@ -3,6 +3,7 @@ from wtforms import StringField, DecimalField, SelectField
 from wtforms.validators import DataRequired
 
 
+
 class CompoundForm(FlaskForm):
     """
     A FORM FOR CREATING A COMPOUND.

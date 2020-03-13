@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm">
+     {% for r in results %}
+     <p>{{ r.name }}: {% for terpene in r.terpenes %}
+        {{ terpene.compound.name }}</p>
+      {% endfor %}
+     {% endfor %}
+
+  </div>
+</div>
+
+
+{% endblock %}

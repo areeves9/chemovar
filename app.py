@@ -3,8 +3,10 @@ from dotenv import load_dotenv
 
 from flask import (
     Flask,
+    flash,
     redirect,
     render_template,
+    request,
     url_for
 )
 
@@ -13,7 +15,7 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_fontawesome import FontAwesome
 
-from forms import CompoundForm, SearchForm, TerpeneForm
+from forms import SearchForm
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -48,8 +50,26 @@ migrate = Migrate(app, db)
 def get_index():
     form = SearchForm()
     if form.validate_on_submit():
-        return redirect('/success')
-    return render_template("index.html", form=form)
+        flash('Search for strain {} success!'.format(
+            form.strain.data))
+        return redirect(url_for('success'))
+    return render_template('index.html', form=form)
+
+
+def get_search_results(data):
+    search_strain_terpenes = db.session.query(Compound.name).\
+        join("terpenes", "strains").\
+        filter(Strain.name == data).\
+        subquery()
+
+    result = db.session.query(Strain).\
+        join("terpenes", "compound").\
+        filter(Compound.name.in_(search_strain_terpenes)).\
+        group_by(Strain.id).\
+        having(db.func.count() >= 2).\
+        all()
+
+    return render_template('success.html', results=result)
 
 
 def get_strain_list():
@@ -81,6 +101,12 @@ def get_terpene_list():
 @app.route('/', methods=['GET'])
 def index():
     return get_index()
+
+
+@app.route('/success', methods=['GET', 'POST'])
+def success():
+    data = request.form['strain']
+    return get_search_results(data)
 
 
 @app.route('/strains/', methods=['GET'])
@@ -123,34 +149,7 @@ def terpenes():
     return get_terpene_list()
 
 
-@app.route('/compounds/add/', methods=['GET', 'POST'])
-def compound_add():
-    form = CompoundForm()
-    # conveience method check if POST and form valid
-    if form.validate_on_submit():
-        compound = Compound()
-        compound.name = form.name.data
-        db.session.add(compound)
-        db.session.commit()
-        return redirect(url_for('compounds.html'))
-    return render_template('compound_form.html', form=form)
-
-
-@app.route('/terpenes/add/', methods=['GET', 'POST'])
-def terpene_add():
-    form = TerpeneForm()
-    # conveience method check if POST and form valid
-    if form.validate_on_submit():
-        terpene = Terpene()
-        terpene.compound_id = form.compound_id.data
-        db.session.add(terpene)
-        db.session.commit()
-        return redirect(url_for('terpenes'))
-    return render_template('terpene_form.html', form=form)
-
-
 if __name__ == '__main__':
     app.run()
-
 
 from models import Compound, Terpene, Strain

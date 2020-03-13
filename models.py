@@ -49,7 +49,7 @@ class Terpene(db.Model):
 class Strain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(96), unique=True, nullable=False)
-    image = db.Column(db.String(255), unique=False, nullable=False)
+    image = db.Column(db.String(255), unique=False, nullable=True)
     terpenes = db.relationship('Terpene', secondary=terpenes, lazy='subquery', backref=db.backref('strains', lazy=True))
 
     @property
@@ -74,11 +74,11 @@ class Strain(db.Model):
             if r.status_code == 200:
                 data = r.json()  # json strain object
                 image_url = data['data'][0]['image']  # url property of object
-                self.photo_url = image_url
-                self.save()
-                return self.photo_url
+                self.image = image_url
+                db.session.add(self)
+                return db.session.commit()
             else:
-                return self.photo_url
+                return self.image
 
     def __repr__(self):
         return '<Strain %r>' % self.name

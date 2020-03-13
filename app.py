@@ -54,9 +54,10 @@ def get_index():
 
 
 def get_search_results(data):
+    strain = data
     search_strain_terpenes = db.session.query(Compound.name).\
         join("terpenes", "strains").\
-        filter(Strain.name == data).\
+        filter(Strain.name == strain).\
         subquery()
 
     result = db.session.query(Strain).\
@@ -66,7 +67,14 @@ def get_search_results(data):
         having(db.func.count() >= 2).\
         all()
 
-    return render_template('success.html', results=result)
+    count = len(result)
+
+    return render_template(
+        'success.html',
+        count=count,
+        results=result,
+        strain=strain
+    )
 
 
 def get_strain_list():

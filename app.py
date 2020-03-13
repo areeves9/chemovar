@@ -13,9 +13,7 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_fontawesome import FontAwesome
 
-from forms import CompoundForm, TerpeneForm
-
-
+from forms import CompoundForm, SearchForm, TerpeneForm
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -48,7 +46,10 @@ migrate = Migrate(app, db)
 
 # VIEW FUNCTIONS
 def get_index():
-    return render_template("index.html")
+    form = SearchForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template("index.html", form=form)
 
 
 def get_strain_list():

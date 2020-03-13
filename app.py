@@ -21,6 +21,11 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 ENV_DIR = os.path.join(ROOT_DIR, '.env')
 load_dotenv(ENV_DIR)
 
+
+headers = {
+    'X-API-Key': os.getenv('CANNABIS_REPORTS_API'),
+}
+
 # set config variables based on flask environment setting
 if app.config['ENV'] == 'development':
     app.config.update(
@@ -35,8 +40,6 @@ migrate = Migrate(app, db)
 
 
 # VIEW FUNCTIONS
-
-
 def get_strain_list():
     strains = Strain.query.order_by(Strain.name.desc()).all()
     return render_template("strains.html", strains=strains)
@@ -57,29 +60,55 @@ def get_compound_object(id):
     return render_template("compound.html", compound=compound)
 
 
+def get_terpene_list():
+    terpenes = Terpene.query.all()
+    return render_template("terpenes.html", terpenes=terpenes)
+
+
 # ROUTES
+@app.route('/', methods=['GET'])
+def index():
+    return index()
+
+
 @app.route('/strains/', methods=['GET'])
 def strains():
-    if request.method == 'GET':
-        return get_strain_list()
+    """
+    RETURNS UNORDERED LIST OF STRAINS FROM THE DB.
+    """
+    return get_strain_list()
 
 
 @app.route('/strains/<int:id>/', methods=['GET'])
 def strain(id):
-    if request.method == 'GET':
-        return get_strain_object(id)
+    """
+    RETURNS STRAIN INSTANCE DETAIL TEMPLATE.
+    """
+    return get_strain_object(id)
 
 
 @app.route('/compounds/', methods=['GET'])
 def compounds():
-    if request.method == 'GET':
-        return get_compound_list()
+    """
+    RETURNS LIST OF COMPOUND INSTANCES FROM DB.
+    """
+    return get_compound_list()
 
 
 @app.route('/compound/<int:id>/', methods=['GET'])
 def compound(id):
-    if request.method == 'GET':
-        return get_compound_object(id)
+    """
+    RETURN COMPOUND INSTANCE FROM DB.
+    """
+    return get_compound_object(id)
+
+
+@app.route('/terpenes/', methods=['GET'])
+def terpenes():
+    """
+    RETURN LIST OF TERPENE INSTANCES.
+    """
+    return get_terpene_list()
 
 
 @app.route('/compounds/add/', methods=['GET', 'POST'])
@@ -89,10 +118,9 @@ def compound_add():
     if form.validate_on_submit():
         compound = Compound()
         compound.name = form.name.data
-
         db.session.add(compound)
         db.session.commit()
-        return redirect(url_for('compounds'))
+        return redirect(url_for('compounds.html'))
     return render_template('compound_form.html', form=form)
 
 
@@ -108,7 +136,9 @@ def terpene_add():
         return redirect(url_for('terpenes'))
     return render_template('terpene_form.html', form=form)
 
+
 if __name__ == '__main__':
     app.run()
+
 
 from models import Compound, Terpene, Strain

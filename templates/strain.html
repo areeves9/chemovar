@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-sm">
-    <h3>{{ strain.name }}</h3>
+    <h3>{{ strain.name }}</h3> {{ strain }}
     <ul>
       {% for terpene in strain.terpenes %}
       <li>{{ terpene.compound.name }}</li>

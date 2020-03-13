@@ -29,9 +29,6 @@ ENV_DIR = os.path.join(ROOT_DIR, '.env')
 load_dotenv(ENV_DIR)
 
 
-headers = {
-    'X-API-Key': os.getenv('CANNABIS_REPORTS_API'),
-}
 
 # set config variables based on flask environment setting
 if app.config['ENV'] == 'development':

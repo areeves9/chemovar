@@ -1,11 +1,17 @@
 import os
 from dotenv import load_dotenv
 
-from flask import Flask, request, redirect, jsonify, render_template, url_for
+from flask import (
+    Flask,
+    redirect,
+    render_template,
+    url_for
+)
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
+from flask_fontawesome import FontAwesome
 
 from forms import CompoundForm, TerpeneForm
 
@@ -13,6 +19,7 @@ from forms import CompoundForm, TerpeneForm
 
 app = Flask(__name__)
 Bootstrap(app)
+fa = FontAwesome(app)
 
 
 # configuration with environmetnal variables from python-dotenv
@@ -40,6 +47,10 @@ migrate = Migrate(app, db)
 
 
 # VIEW FUNCTIONS
+def get_index():
+    return render_template("index.html")
+
+
 def get_strain_list():
     strains = Strain.query.order_by(Strain.name.desc()).all()
     return render_template("strains.html", strains=strains)
@@ -68,7 +79,7 @@ def get_terpene_list():
 # ROUTES
 @app.route('/', methods=['GET'])
 def index():
-    return index()
+    return get_index()
 
 
 @app.route('/strains/', methods=['GET'])

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="col-md-4 bg-light border rounded">
+      <h5 class="mt-4 text-left">Search</h5>
+      <form action="{% url 'accounts:login' %}" method="post">{% csrf_token %}
+          {{ form|crispy }}
+          <p class="mt-4 text-center">
+              Forgot password? - Click 
+              <a href="{% url 'accounts:password_reset' %}">here</a> 
+              to reset.
+          </p>
+          <button class="mt-4 btn-block btn btn-primary" type="submit">{% fa5_icon 'sign-in-alt fa-1x' 'fas' %}  Login</button>
+          <a href="{% url 'accounts:register' %}" class="mt-4 btn-block btn btn-secondary" type="submit">Create Account</a>
+      </form>
+  </div>
+</div>
+
+
+{% endblock %}

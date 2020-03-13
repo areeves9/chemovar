@@ -1,4 +1,5 @@
 import os
+import enum
 import requests
 from sqlalchemy import JSON
 from app import db
@@ -32,8 +33,18 @@ class Compound(db.Model):
         return f'<Compound {self.name}>'.format(self.name)
 
 
+class TerpeneAromas(enum.Enum):
+    herbal = 'Herbal'
+    pine = 'Pine'
+    peppery = 'Peppery'
+    citrus = 'Citrus'
+    fruity = 'Fruity'
+    Sweet = 'Sweet'
+
+
 class Terpene(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    aroma = db.Column(db.Enum(TerpeneAromas), nullable=False)
     compound_id = db.Column(db.Integer, db.ForeignKey('compound.id'), nullable=False)
 
     @property

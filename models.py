@@ -1,5 +1,6 @@
 import os
 import requests
+from sqlalchemy import JSON
 from app import db
 
 cannabis_reports_url = "https://www.cannabisreports.com/api/v1.0/strains/search/"
@@ -48,8 +49,10 @@ class Terpene(db.Model):
 
 class Strain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(96), unique=True, nullable=False)
     image = db.Column(db.String(255), unique=False, nullable=True)
+    genetics = db.Column(db.Text(), unique=True, nullable=True)
+    lineage = db.Column(JSON, nullable=True)
+    name = db.Column(db.String(96), unique=True, nullable=False)
     terpenes = db.relationship('Terpene', secondary=terpenes, lazy='subquery', backref=db.backref('strains', lazy=True))
 
     @property
@@ -64,21 +67,23 @@ class Strain(db.Model):
     def serialize_many2many(self):
         return [i.serialize for i in self.terpenes]
 
-    def get_strain_image(self):
+    def get_strain_data(self):
         """
         REQUEST TO CANNABIS REPORTS API FOR IMAGE URL.
         """
-        if not self.image:
-            strain_query_url = cannabis_reports_url + "%s" % (self.name)
-            r = requests.get(strain_query_url, headers)
-            if r.status_code == 200:
-                data = r.json()  # json strain object
-                image_url = data['data'][0]['image']  # url property of object
-                self.image = image_url
-                db.session.add(self)
-                return db.session.commit()
-            else:
-                return self.image
+        strain_query_url = cannabis_reports_url + "%s" % (self.name)
+        r = requests.get(strain_query_url, headers)
+        if r.status_code == 200:
+            data = r.json()  # json strain object
+            image_url = data['data'][0]['image']  # url property of object
+            genetics = data['data'][0]['genetics']['names']
+            lineage = data['data'][0]['lineage']
+            self.image = image_url
+            self.genetics = genetics
+            self.lineage = lineage
+            db.session.add(self)
+            return db.session.commit()
+
 
     def __repr__(self):
         return '<Strain %r>' % self.name

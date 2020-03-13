@@ -1,25 +1,27 @@
 {% extends "base.html" %}
-
 {% import "bootstrap/wtf.html" as wtf %}
 
-
 {% block content %}
-
-
 <div class="row h-100 justify-content-center align-items-center">
-  <div class="col-md-4 bg-light border rounded">
-      <h5 class="mt-4 text-left">Terpene Match</h5>
+  <div class="col-md-6 bg-dark text-light rounded">
+      <h5 class="mt-4 text-center">Strain Substitute</h5>
+      <p class="text-center">Find strains with complimentary terpene profiles.</p>
       <form action="{{ url_for('success') }}" method="post" class="form" role="form">
         {{ form.csrf_token() }}
-       <d1>
+        <d1>
         {{ wtf.form_field(form.strain, class='form-control', placeholder='Search strains...') }}
-       </d1>
-      <button type="Submit" class='btn btn-secondary btn-block'>Submit</button>
+        </d1>
+        <button type="Submit" class='btn btn-secondary btn-block'>Submit</button>
       </form>
-      
-    </form>
   </div>
 </div>
 
-
+<style>
+  .justify-content-center {
+    background-image: url("{{ url_for('static', filename='images/home.jpg')}}");
+    background-repeat: no-repeat, repeat;
+    background-position: center; /* Center the image */
+    background-size: cover;
+  }
+</style>
 {% endblock %}

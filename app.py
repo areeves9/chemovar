@@ -57,7 +57,7 @@ def get_search_results(data):
     strain = data
     search_strain_terpenes = db.session.query(Compound.name).\
         join("terpenes", "strains").\
-        filter(Strain.name == strain).\
+        filter(Strain.name.ilike(strain)).\
         subquery()
 
     result = db.session.query(Strain).\
@@ -89,7 +89,22 @@ def get_strain_list():
 
 def get_strain_object(id):
     strain = Strain.query.get_or_404(id)
-    return render_template("strain.html", strain=strain)
+    countries = []
+    codes = []
+    image = strain.image
+    lineage = strain.lineage
+
+    for key in lineage:
+        codes.append((lineage[key]).upper())
+        countries.append(key)
+
+    return render_template(
+        "strain.html",
+        image=image,
+        codes=codes,
+        lineage=[lineage],
+        strain=strain
+    )
 
 
 def get_compound_list():

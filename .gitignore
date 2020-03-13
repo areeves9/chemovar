@@ -2,3 +2,5 @@
 .flaskenv
 .env
 .ipynb
+.jpg
+/static

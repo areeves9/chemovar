@@ -1,17 +1,42 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block header %}
+<header>
+  <div class="row">
+      <div style="color: white;
+      height: 100%;
+      width: 100%;
+      background-size: cover; 
+      background-position: center; 
+      background-repeat: no-repeat; 
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({{image}});"
+      class="jumbotron jumbotron-fluid mr-0">
+          <div class="container-fluid">
+              <h1 class="display-4 text-center"><i>{{ strain.name }}</i></h1>
+              <p class="mt-n2 lead text-center"><b>{{ strain.genetics }}</b></p>
+          </div>
+      </div>
+  </div>
+</header>
+{% endblock %}
 
-<div class="row">
-  <div class="col-sm">
-    <h3>{{ strain.name }}</h3> {{ strain }}
-    <ul>
-      {% for terpene in strain.terpenes %}
-      <li>{{ terpene.compound.name }}</li>
+{% block content %}
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="col-md-6 bg-light border rounded">
+      <h5 class="m-4 text-center">{{ strain.name }} Lineage</h5>
+      {% for dict_item in lineage %}
+      {% for key, value in dict_item.items() %}         
+        <img class="d-block mx-auto" src="http://www.geognos.com/api/en/countries/flag/{{ value }}.png">
+          <h5 class="card-title text-center">{{ key }}</h5>
+     
       {% endfor %}
-    </ul>
+      {% endfor %}
+
   </div>
 </div>
 
 
+<style>
+
+</style>
 {% endblock %}

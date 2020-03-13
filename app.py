@@ -78,8 +78,13 @@ def get_search_results(data):
 
 
 def get_strain_list():
-    strains = Strain.query.order_by(Strain.name.desc()).all()
-    return render_template("strains.html", strains=strains)
+    results = Strain.query.order_by(Strain.name.desc()).all()
+    count = len(results)
+    return render_template(
+        "strains.html",
+        count=count,
+        results=results,
+    )
 
 
 def get_strain_object(id):

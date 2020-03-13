@@ -2,23 +2,16 @@
 
 {% block content %}
 
-<div class="row">
-  <div class="col-sm">
-    {% for strain in strains %}
 
-    <h3>
-        <a href="{{ url_for('strain', id=strain.id) }}">{{ strain.name }}</a>
-    </h3>
-    <ul>
-        {% for terpene in strain.terpenes %}
-
-      <li>{{ terpene.compound.name }}</li>
-        {% endfor %}
-    </ul>
-    {% endfor %}
+<div class="h-100 mt-4 row justify-content-center">
+  <div class="col-md-8">
+      <h5 class="text-left">Strain Database ({{ count }})</h5>
+      
+      <div class="mb-2 card card-body bg-light">
+          {% include "partials/substitutes.html" %}
+      </div>
 
   </div>
 </div>
-
 
 {% endblock %}

@@ -6,7 +6,7 @@
         <a href="{{ url_for('strain', id=strain.id) }}">
             <img style="height:104px;width:104px;" 
                 src="{{ strain.image }}" 
-                class="mr-3 mb-4 rounded-circle border border-dark" alt="..." />
+                class="mt-4 mr-3 mb-4 rounded-circle border border-dark" alt="..." />
         </a>
         {% else %}
         <a href="{{ url_for('strain', id=strain.id) }}">
@@ -23,13 +23,14 @@
             <ul class="list-group list-group-horizontal">
                 <li class="list-group-item border-0">
                     {% for terpene in strain.terpenes %}
-                    <span class="badge badge-pill badge-dark">
-                    {{ terpene.compound.name }}
+                    <span class="badge badge-pill badge-secondary">
+                        {{ terpene.compound.name }}
                     </span>
                     {% endfor %}
                 </li>
             </ul>
         </div>
     </li>
+    <hr/>
     {% endfor %}
 </ul>

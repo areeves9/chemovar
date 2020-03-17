@@ -1,0 +1,96 @@
+<h5 class="m-4">Sensory</h5>
+<ul class="mb-4">
+    {% for aroma in aromas %}
+    {% if aroma == 'Citrus' %}
+    <li class="">
+      <i class="fas fa-lemon fa-2x"></i> <br />
+      <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+
+    </li>
+    {% elif aroma == 'Sweet' %}
+    <li class="">
+        <i class="fas fa-birthday-cake fa-2x"></i><br />
+        <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+    </li>
+    {% elif aroma == 'Pepper' %}
+    <li class="">
+        <i class="fas fa-pepper-hot fa-2x"></i><br />
+        <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+    </li>
+    {% elif aroma == 'Herbal' %}
+    <li class="">
+        <i class="fas fa-spa fa-2x"></i><br />
+        <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+    </li>
+    {% elif aroma == 'Pine' %}
+    <li class="">
+        <i class="fas fa-tree fa-2x"></i><br />
+        <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+    </li>
+    {% elif aroma == 'Fruity' %}
+    <li class="">
+        <i class="fas fa-apple-alt fa-2x"></i><br />
+        <span style="font-size: 1rem;" class="{{ aroma }}-text badge badge-dark font-weight-bold mt-1">{{ aroma }}</span>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<style>
+  .fa-lemon {
+    background-color: orange;    
+  }
+  .fa-tree {
+    background-color: green;
+    padding: 1rem 1.2rem !important;
+  }
+  .fa-spa {
+    background-color: khaki;
+  }
+  .fa-pepper-hot {
+    background-color: lightcoral;
+  }
+  .fa-birthday-cake {
+      background-color: pink;
+  }
+  .fa-apple-alt {
+      background-color: red;
+  }
+  .fas {
+    color: white;
+    padding: 1rem;
+    border-radius: 3rem;
+  }
+    ul {
+        list-style-type: none;
+        overflow: hidden;
+        display: inline-block;
+        padding: 0;
+    }
+    li {
+        float: left;
+        margin: 3px;
+    }
+    li i {
+        display: block;
+        border: 2px solid black;
+    }
+    .Citrus-text {
+      color: orange;
+    }
+    .Pepper-text {
+      color: lightcoral;
+    }
+    .Herbal-text {
+      color: khaki;
+    }
+    .Pine-text {
+      color: green;
+    }
+    .Sweet-text {
+      color: pink;
+    }
+    .Fruity-text {
+      color: red;
+    }
+</style>

@@ -11,7 +11,7 @@ class CompoundForm(FlaskForm):
 
 
 class TerpeneForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
+    aroma = StringField('aroma', validators=[DataRequired()])
     compound_id = SelectField(coerce=int)
 
 

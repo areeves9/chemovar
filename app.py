@@ -13,13 +13,11 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
-from flask_fontawesome import FontAwesome
 
-from forms import SearchForm
+from forms import CompoundForm, SearchForm, TerpeneForm
 
 app = Flask(__name__)
 Bootstrap(app)
-fa = FontAwesome(app)
 
 
 # configuration with environmetnal variables from python-dotenv
@@ -53,6 +51,30 @@ def get_index():
     return render_template('index.html', form=form)
 
 
+def create_compound():
+    form = CompoundForm()
+    if form.validate_on_submit():
+        compound = Compound()
+        compound.name = form.data['name']
+        db.session.add(compound)
+        db.session.commit()
+        return redirect(url_for('compounds'))
+    return render_template('compound_form.html', form=form)
+
+
+def create_terpene():
+    form = TerpeneForm()
+    print(form)
+    if form.validate_on_submit():
+        terpene = Terpene()
+        terpene.compound_id = form.data['compound_id']
+        terpene.aroma = form.data['aroma']
+        db.session.add(terpene)
+        db.session.commit()
+        return redirect(url_for('terpenes'))
+    return render_template('terpene_form.html', form=form)
+
+
 def get_search_results(data):
     strain = data
     search_strain_terpenes = db.session.query(Compound.name).\
@@ -64,7 +86,7 @@ def get_search_results(data):
         join("terpenes", "compound").\
         filter(Compound.name.in_(search_strain_terpenes)).\
         group_by(Strain.id).\
-        having(db.func.count() >= 2).\
+        having(db.func.count() >= 3).\
         all()
 
     count = len(result)
@@ -89,21 +111,29 @@ def get_strain_list():
 
 def get_strain_object(id):
     strain = Strain.query.get_or_404(id)
+    aromas = []
     countries = []
     codes = []
     image = strain.image
     lineage = strain.lineage
+    terpenes = []
 
     for key in lineage:
         codes.append((lineage[key]).upper())
         countries.append(key)
 
+    for terpene in strain.terpenes:
+        aromas.append(terpene.aroma)
+        terpenes.append(terpene.compound.name)
+
     return render_template(
         "strain.html",
+        aromas=aromas,
         image=image,
         codes=codes,
         lineage=[lineage],
-        strain=strain
+        strain=strain,
+        terpenes=terpenes,
     )
 
 
@@ -150,6 +180,14 @@ def strain(id):
     return get_strain_object(id)
 
 
+@app.route('/compounds/add/', methods=['GET', 'POST'])
+def add_compound():
+    """
+    CREATE A COMPOUND AND SAVE TO THE DB.
+    """
+    return create_compound()
+
+
 @app.route('/compounds/', methods=['GET'])
 def compounds():
     """
@@ -172,6 +210,11 @@ def terpenes():
     RETURN LIST OF TERPENE INSTANCES.
     """
     return get_terpene_list()
+
+
+@app.route('/terpenes/add/', methods=['GET', 'POST'])
+def add_terpene():
+    return create_terpene()
 
 
 if __name__ == '__main__':

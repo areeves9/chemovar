@@ -14,7 +14,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 
-from forms import CompoundForm, SearchForm, TerpeneForm
+from forms import CompoundForm, SearchForm, TerpeneForm, StrainForm
+
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -37,7 +38,6 @@ if app.config['ENV'] == 'development':
         )
 
 db = SQLAlchemy(app)
-
 migrate = Migrate(app, db)
 
 
@@ -64,7 +64,8 @@ def create_compound():
 
 def create_terpene():
     form = TerpeneForm()
-    print(form)
+    form.compound_id.choices = [(c.id, c.name) for c in Compound.query.all()]
+
     if form.validate_on_submit():
         terpene = Terpene()
         terpene.compound_id = form.data['compound_id']
@@ -73,6 +74,18 @@ def create_terpene():
         db.session.commit()
         return redirect(url_for('terpenes'))
     return render_template('terpene_form.html', form=form)
+
+
+def create_strain():
+    form = StrainForm()
+
+    if form.validate_on_submit():
+        strain = Strain()
+        strain.name = form.data['name']
+        db.session.add(strain)
+        db.session.commit()
+        return redirect(url_for('strains'))
+    return render_template('strain_form.html', form=form)
 
 
 def get_search_results(data):
@@ -178,6 +191,14 @@ def strain(id):
     RETURNS STRAIN INSTANCE DETAIL TEMPLATE.
     """
     return get_strain_object(id)
+
+
+@app.route('/strains/add/', methods=['GET', 'POST'])
+def add_strain():
+    """
+    CREATE A COMPOUND AND SAVE TO THE DB.
+    """
+    return create_strain()
 
 
 @app.route('/compounds/add/', methods=['GET', 'POST'])

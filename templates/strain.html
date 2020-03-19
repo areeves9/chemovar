@@ -13,8 +13,10 @@
       class="jumbotron jumbotron-fluid mr-0">
           <div class="container-fluid">
               <h1 class="display-4 text-center"><i>{{ strain.name }}</i></h1>
+              {% if strain.genetics %}
               <p class="mt-n2 lead text-center"><b>{{ strain.genetics }}</b></p>
-          </div>
+              {% endif %}
+            </div>
       </div>
   </div>
 </header>

@@ -7,7 +7,11 @@
   <div class="col-md-8">
       <h5 class="text-center">Substitue Strains for {{ strain }} ({{ count }})</h5>
       <p class="text-center">Matching 3 of 5 terpenes.</p>
+      {% if results %}
       {% include "partials/substitutes.html" %}
+      {% else %}
+      {% include "partials/error.html" %}
+      {% endif %}
       <a href="{{ url_for('index') }}" class="btn btn-secondary d-block text-white">Back</a>
 
   </div>

@@ -12,10 +12,17 @@
       background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({{image}});"
       class="jumbotron jumbotron-fluid mr-0">
           <div class="container-fluid">
-              <h1 class="display-4 text-center"><i>{{ strain.name }}</i></h1>
-              {% if strain.genetics %}
-              <p class="mt-n2 lead text-center"><b>{{ strain.genetics }}</b></p>
-              {% endif %}
+              <h1 class="display-4 text-center">
+                <i>{{ strain.name }}</i>
+              </h1>
+              <p class="mt-n2 lead text-center">
+                <b>
+                {% if strain.genetics == 'false' %}
+                {% else %} 
+                {{ strain.genetics }}
+                {% endif %}
+                </b>
+              </p>
             </div>
       </div>
   </div>
@@ -25,6 +32,12 @@
 {% block content %}
 <div class="row h-100 justify-content-center align-items-center">
   <div class="col-md-4 bg-light border rounded text-center">
+      <h5 class="mt-5">Terpenes</h5>
+      {% for terpene in strain.terpenes %}
+      <span class="badge badge-pill badge-secondary">
+          {{ terpene.compound.name }}
+      </span>
+      {% endfor %}
       {% include "partials/sensory.html" %}
       {% include "partials/flags.html" %}
   </div>

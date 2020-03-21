@@ -52,7 +52,7 @@ class Terpene(db.Model):
 class Strain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String(255), unique=False, nullable=True)
-    genetics = db.Column(db.Text(), unique=True, nullable=True)
+    genetics = db.Column(db.Text(), unique=False, nullable=True)
     lineage = db.Column(JSON, nullable=True)
     name = db.Column(db.String(96), unique=True, nullable=False)
     terpenes = db.relationship('Terpene', secondary=terpenes, lazy='subquery', backref=db.backref('strains', lazy=True))

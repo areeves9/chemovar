@@ -102,12 +102,23 @@ def get_search_results(data):
         having(db.func.count() >= 3).\
         all()
 
-    count = len(result)
+    # iterate through query results, checking ea. object
+    # to see if it is True, and return a list of all
+    # True objects
+    filteredResult = list(
+        filter(
+            None, map(
+                lambda obj: None if obj.name.lower()
+                == strain.lower() else obj, result)
+            )
+        )
+
+    count = len(filteredResult)
 
     return render_template(
         'success.html',
         count=count,
-        results=result,
+        results=filteredResult,
         strain=strain
     )
 

@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="row h-100 justify-content-center align-items-center">
-  <div class="col-md-6 bg-dark text-light rounded">
+  <div id="concol" class="col-md-6 bg-dark text-light rounded">
       <h5 class="mt-4 text-center">Strain Substitute</h5>
       <p class="text-center">Find strains with complimentary terpene profiles.</p>
       <form action="{{ url_for('success') }}" method="post" class="form" role="form">
@@ -23,5 +23,34 @@
     background-position: center; /* Center the image */
     background-size: cover;
   }
+  .ui-autocomplete {
+      list-style: none;
+      background: white;
+      z-index: 2;
+      width: 25%;
+  }
 </style>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  console.log("hello");
+  $(document).ready(function(){
+    var strains=[];
+
+    function loadStrains(){
+      $.getJSON('/autocomplete', function(data, status, xhr){
+        for (var i = 0; i < data.length; i++ ) {
+              strains.push(data[i].name);
+          }
+    });
+    };
+
+    loadStrains();
+
+    $('#strain').autocomplete({
+      source: strains, 
+      });
+    }); 
+</script>
 {% endblock %}

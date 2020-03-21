@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import (
     Flask,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -42,6 +43,12 @@ migrate = Migrate(app, db)
 
 
 # VIEW FUNCTIONS
+def get_autocomplete():
+    strains = Strain.query.all()
+    list_strains = [s.serialize for s in strains]
+    return jsonify(list_strains)
+
+
 def get_index():
     form = SearchForm()
     if form.validate_on_submit():
@@ -181,6 +188,10 @@ def get_terpene_list():
 def index():
     return get_index()
 
+
+@app.route('/autocomplete', methods=['GET'])
+def autocomplete():
+    return get_autocomplete()
 
 @app.route('/success', methods=['GET', 'POST'])
 def success():

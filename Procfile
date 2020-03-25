@@ -1,1 +1,1 @@
-web: cd app && gunicorn flask run
+web: cd app && gunicorn app:app

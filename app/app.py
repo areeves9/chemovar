@@ -26,6 +26,14 @@ if app.config['ENV'] == 'development':
             SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI'),
             SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
         )
+elif app.config['ENV'] == 'production':
+    app.config.update(
+            SECRET_KEY=os.getenv('SECRET_KEY'),
+            SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URL'),
+            SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
+        )
+else:
+    print("Errorsss...")
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

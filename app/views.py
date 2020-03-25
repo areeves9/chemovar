@@ -74,37 +74,35 @@ def create_strain():
     return render_template('forms/strain_form.html', form=form)
 
 
-def get_search_results(data):
-    strain = data
+def get_search_results(strain):
+    page = 1
+    per_page = 10
     search_strain_terpenes = db.session.query(Compound.name).\
         join("terpenes", "strains").\
         filter(Strain.name.ilike(strain)).\
         subquery()
 
-    result = db.session.query(Strain).\
+    results = db.session.query(Strain).\
         join("terpenes", "compound").\
         filter(Compound.name.in_(search_strain_terpenes)).\
         group_by(Strain.id).\
         having(db.func.count() >= 3).\
-        all()
-
+        paginate(page, per_page)
     # iterate through query results, checking ea. object
     # to see if it is True, and return a list of all
     # True objects
-    filteredResult = list(
-        filter(
-            None, map(
-                lambda obj: None if obj.name.lower()
-                == strain.lower() else obj, result)
-            )
-        )
-
-    count = len(filteredResult)
+    # filteredResult = list(
+    #     filter(
+    #         None, map(
+    #             lambda obj: None if obj.name.lower()
+    #             == strain.lower() else obj, result)
+    #         )
+    #     )
 
     return render_template(
         'success.html',
-        count=count,
-        results=filteredResult,
+        count=results.total,
+        results=results,
         strain=strain
     )
 

@@ -1,0 +1,21 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+    {% if results.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('strains', page=results.prev_num) }}"> 
+                Previous Strains</a>
+        </li>
+    {% endif %}
+    {% for page in results.iter_pages() %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('strains', page=page) }}">{{ page }}</a></li>
+
+    {% endfor %}
+    {% if results.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('strains', page=results.next_num) }}">
+                Next Strains</a>
+        </li>
+    {% endif %}
+    
+    </ul>
+  </nav>

@@ -5,10 +5,11 @@
 
 <div class="h-100 mt-4 row justify-content-center">
   <div class="col-md-8">
-      <h5 class="text-left mb-4">Strain Database ({{ count }})</h5>
-      
-          {% include "partials/substitutes.html" %}
-
+      <h5 class="text-left mb-4">Strain Database, {{ count }} Strains</h5>
+      <p class="text-secondary">
+        page {{ page }} of {{ pages }}
+      </p>
+          {% include "partials/results.html" %} 
   </div>
 </div>
 

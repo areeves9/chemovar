@@ -109,13 +109,17 @@ def get_search_results(data):
     )
 
 
-def get_strain_list():
-    results = Strain.query.order_by(Strain.name.desc()).all()
-    count = len(results)
+def get_strain_list(page=1):
+    if request.args:
+        page = request.args.get('page', 1, type=int)
+    per_page = 10
+    results = Strain.query.order_by(Strain.name.desc()).paginate(page, per_page)
     return render_template(
         "strains.html",
-        count=count,
+        count=results.total,
         results=results,
+        page=page,
+        pages=results.pages,
     )
 
 

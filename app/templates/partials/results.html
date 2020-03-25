@@ -1,5 +1,5 @@
 <ul class="list-unstyled">
-    {% for strain in results %}
+    {% for strain in results.items %}
     <li class="media">
         {% if strain.image %}
         <a href="{{ url_for('strain', id=strain.id) }}">
@@ -33,3 +33,7 @@
     <hr/>
     {% endfor %}
 </ul>
+
+{% include "partials/pagination.html" %}
+
+

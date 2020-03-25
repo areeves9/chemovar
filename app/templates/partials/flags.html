@@ -1,0 +1,11 @@
+<h5 class="m-4 text-center">Lineage</h5>
+{% if strain.lineage %}
+{% for dict_item in lineage %}
+{% for key, value in dict_item.items() %}         
+<img class="d-block mx-auto" src="http://www.geognos.com/api/en/countries/flag/{{ value }}.png">
+<h5 class="card-title text-center">{{ key }}</h5>
+{% endfor %}
+{% endfor %}
+{% elif not strain.lineage %}
+<h6 class="text-center">No Lineage Data Available.</h6>
+{% endif %}

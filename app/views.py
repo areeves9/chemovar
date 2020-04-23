@@ -74,9 +74,8 @@ def create_strain():
     return render_template('forms/strain_form.html', form=form)
 
 
-def get_search_results(strain):
-    page = 1
-    per_page = 10
+def get_search_results(strain=None):
+
     search_strain_terpenes = db.session.query(Compound.name).\
         join("terpenes", "strains").\
         filter(Strain.name.ilike(strain)).\
@@ -85,25 +84,17 @@ def get_search_results(strain):
     results = db.session.query(Strain).\
         join("terpenes", "compound").\
         filter(Compound.name.in_(search_strain_terpenes)).\
+        filter(Strain.name.notin_([strain])).\
         group_by(Strain.id).\
-        having(db.func.count() >= 3).\
-        paginate(page, per_page)
-    # iterate through query results, checking ea. object
-    # to see if it is True, and return a list of all
-    # True objects
-    # filteredResult = list(
-    #     filter(
-    #         None, map(
-    #             lambda obj: None if obj.name.lower()
-    #             == strain.lower() else obj, result)
-    #         )
-    #     )
+        having(db.func.count() >= 5).all()
+
+    print(results)
 
     return render_template(
         'success.html',
-        count=results.total,
         results=results,
-        strain=strain
+        count=len(results),
+        strain=strain,
     )
 
 
@@ -116,7 +107,7 @@ def get_strain_list(page=1):
         "strains.html",
         count=results.total,
         results=results,
-        page=page,
+        current_page=page,
         pages=results.pages,
     )
 
@@ -140,10 +131,6 @@ def get_strain_object(id):
     for terpene in strain.terpenes:
         aromas.append(terpene.aroma)
         terpenes.append(terpene.compound.name)
-    # x = slice(4)
-    # aromas = aromas[x]
-
-    print(aromas)
 
     return render_template(
         "strain.html",
@@ -184,8 +171,9 @@ def autocomplete():
 
 @app.route('/success', methods=['GET', 'POST'])
 def success():
-    data = request.form['strain']
-    return get_search_results(data)
+    strain = request.form['strain']
+    return get_search_results(strain)
+
 
 
 @app.route('/strains/', methods=['GET'])

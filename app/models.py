@@ -26,6 +26,20 @@ terpenes = db.Table(
 )
 
 
+class Assay(db.Model):
+    """
+    An assay has one terpene, a terpene can belong to 
+    many assays.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    conc = db.Column(db.Float(asdecimal=True, precision=3, decimal_return_scale=None), nullable=False)
+    strain = db.Column(db.Integer, db.ForeignKey('strain.id'), nullable=False)
+    terpene = db.Column(db.Integer, db.ForeignKey('terpene.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<{self.terpene_assays} {round(self.conc, 3)}%>"
+
+
 class Compound(db.Model):
     """
     A many-to-one relationship to Terpene. To account for
@@ -38,7 +52,7 @@ class Compound(db.Model):
     terpenes = db.relationship('Terpene', backref='compound', lazy=True)
 
     def __repr__(self):
-        return f'<Compound {self.name}>'.format(self.name)
+        return f"<Compound {self.name}>"
 
 
 class Terpene(db.Model):
@@ -49,6 +63,7 @@ class Terpene(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     aroma = db.Column(db.String(255), nullable=False)
+    assay = db.relationship('Assay', backref=db.backref('terpene_assays', lazy=True))
     compound_id = db.Column(db.Integer, db.ForeignKey('compound.id'), nullable=False)
 
     @property
@@ -59,7 +74,7 @@ class Terpene(db.Model):
         }
 
     def __repr__(self):
-        return f'<Terpene {self.compound.name}>'
+        return f"{self.compound.name}"
 
 
 class Strain(db.Model):
@@ -73,6 +88,7 @@ class Strain(db.Model):
     genetics = db.Column(db.Text(), unique=False, nullable=True)
     lineage = db.Column(JSON, nullable=True)
     name = db.Column(db.String(96), unique=True, nullable=False)
+    assay = db.relationship('Assay', backref=db.backref('strain_assays', lazy=True))
     terpenes = db.relationship('Terpene', secondary=terpenes, lazy='subquery', backref=db.backref('strains', lazy=True))
 
     @property
@@ -111,4 +127,6 @@ class Strain(db.Model):
             return db.session.commit()
 
     def __repr__(self):
-        return '<Strain %r>' % self.name
+        return f"<Strain {self.name}>"
+
+

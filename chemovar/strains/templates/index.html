@@ -6,7 +6,7 @@
   <div id="concol" class="col-md-6 bg-dark text-light rounded">
       <h5 class="mt-4 text-center">Strain Substitute</h5>
       <p class="text-center">Find strains with complimentary terpene profiles.</p>
-      <form action="{{ url_for('success') }}" method="post" class="form" role="form">
+      <form action="{{ url_for('strains_bp.success') }}" method="post" class="form" role="form">
         {{ form.csrf_token() }}
         <d1>
         {{ wtf.form_field(form.strain, class='form-control', placeholder='Search strains...') }}

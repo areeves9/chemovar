@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm">
+    {% for terpene in terpenes %}
+
+    <h3>
+        {{ terpene.compound.name }}, {{ terpene.aroma }}
+
+    </h3>
+    <ul>
+   
+    </ul>
+    {% endfor %}
+
+  </div>
+</div>
+
+
+{% endblock %}

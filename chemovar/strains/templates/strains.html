@@ -13,7 +13,7 @@
         {% for strain in results.items %}        
         <li class="media">
             {% if strain.image %}
-            <a href="{{ url_for(strain_bp.strain', id=strain.id) }}">
+            <a href="{{ url_for('strain_bp.strain', id=strain.id) }}">
                 <img style="height:104px;width:104px;" 
                     src="{{ strain.image }}" 
                     class="mt-4 mr-3 mb-4 rounded-circle border border-dark" alt="..." />

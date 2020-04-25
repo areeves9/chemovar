@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 
-
+# Global libraries
 db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
@@ -18,7 +18,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
 
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-    # configuration with environmetnal variables from python-dotenv
+    # configuration with environmetnal variables
     ENV_DIR = os.path.join(ROOT_DIR, '.env')
     load_dotenv(ENV_DIR)
 
@@ -28,7 +28,7 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
     )
 
-    # Plugins
+    # Initialize plugins
     db.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)

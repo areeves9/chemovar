@@ -1,3 +1,4 @@
+# Import views
 from .views import (
     get_autocomplete,
     get_index,
@@ -6,12 +7,13 @@ from .views import (
     get_strain_list,
     get_strain_object,
 )
-
+# Import package dependencies
 from flask import (
     Blueprint,
     request,
 )
 
+# Create Flask Blueprint object
 strain_bp = Blueprint(
     'strain_bp',
     __name__,
@@ -19,7 +21,7 @@ strain_bp = Blueprint(
     static_folder='strains/static'
 )
 
-
+# Routes
 @strain_bp.route('/', methods=['GET'])
 def index():
     return get_index()

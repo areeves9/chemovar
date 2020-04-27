@@ -1,10 +1,10 @@
 from .models import Strain
+from chemovar.terpenes.models import Terpene
 from .forms import SearchForm, StrainForm
 from chemovar.compounds.models import Compound
 
 from chemovar import db
 from flask import (
-    Blueprint,
     flash,
     jsonify,
     redirect,
@@ -12,10 +12,6 @@ from flask import (
     request,
     url_for
 )
-
-strain_bp = Blueprint('strain_bp', __name__,
-                        template_folder='templates',
-                        static_folder='static')
 
 
 def get_autocomplete():

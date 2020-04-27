@@ -18,7 +18,8 @@ strain_bp = Blueprint(
     'strain_bp',
     __name__,
     template_folder='templates',
-    static_folder='strains/static'
+    static_folder='static',
+    static_url_path='/strains'
 )
 
 # Routes

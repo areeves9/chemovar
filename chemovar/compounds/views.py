@@ -1,3 +1,4 @@
+from chemovar import db
 from .models import Compound
 from .forms import CompoundForm
 from flask import (
@@ -16,7 +17,7 @@ def create_compound():
         compound.name = form.data['name']
         db.session.add(compound)
         db.session.commit()
-        return redirect(url_for('compounds'))
+        return redirect(url_for('compound_bp.compounds'))
     return render_template('forms/compound_form.html', form=form)
 
 

@@ -20,7 +20,7 @@ def create_terpene():
         terpene.aroma = form.data['aroma']
         db.session.add(terpene)
         db.session.commit()
-        return redirect(url_for('terpenes'))
+        return redirect(url_for('terpene_bp.terpenes'))
     return render_template('forms/terpene_form.html', form=form)
 
 

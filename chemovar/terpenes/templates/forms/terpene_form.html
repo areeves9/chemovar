@@ -7,7 +7,7 @@
     <div class="col-md-6 bg-dark text-light rounded">
         <h5 class="mt-4 text-center">Create Terpene</h5>
 
-        <form method="POST" action="{{ url_for('add_terpene') }}">
+        <form method="POST" action="{{ url_for('terpene_bp.add_terpene') }}">
             <div class="form-group">
                 {{ form.csrf_token }}
                 {{ wtf.form_field(form.aroma) }}

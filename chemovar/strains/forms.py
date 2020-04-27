@@ -1,3 +1,4 @@
+from chemovar.terpenes.models import Terpene
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField,

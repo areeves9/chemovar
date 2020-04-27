@@ -34,6 +34,11 @@ def create_app():
     bootstrap.init_app(app)
 
     with app.app_context():
+        # Import models
+        from chemovar.compounds.models import Compound
+        from chemovar.terpenes.models import Terpene
+        from chemovar.strains.models import Strain
+        from chemovar.assays.models import Assay
         from chemovar.strains import routes as strain_routes
         from chemovar.terpenes import routes as terpene_routes
         from chemovar.compounds import routes as compound_routes

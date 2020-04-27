@@ -6,12 +6,15 @@ from .views import (
 )
 
 
-compound_bp = Blueprint('compound_bp', __name__,
-                        template_folder='templates',
-                        static_folder='static')
+compound_bp = Blueprint(
+    'compound_bp', __name__,
+    template_folder='templates',
+    static_folder='static',
+    static_url_path='/compounds',
+)
 
 #ROUTES
-@compound_bp.route('/compounds/add/', methods=['GET', 'POST'])
+@compound_bp.route('/compounds/add/', methods=['POST', 'GET'])
 def add_compound():
     """
     CREATE A COMPOUND AND SAVE TO THE DB.

@@ -4,4 +4,4 @@
 .env
 .ipynb
 .jpg
-static/
+chemovar/*/static/

@@ -1,7 +1,8 @@
 *.pyc
 *.csv
+*.jpg
+*.ipynb
+*.ipynb_checkpoints
 .flaskenv
 .env
-.ipynb
-.jpg
-chemovar/*/static/
+chemovar/**/static/

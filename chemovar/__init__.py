@@ -7,10 +7,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 
+from flask_security import Security, SQLAlchemySessionUserDatastore
+
 # Global libraries
 db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
+
+
+# Flask-Security
+security = Security()
 
 
 def create_app():
@@ -26,12 +32,19 @@ def create_app():
         SECRET_KEY=os.getenv('SECRET_KEY'),
         SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URL'),
         SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
+        SECURITY_PASSWORD_SALT=os.getenv('SECURITY_PASSWORD_SALT'),
+        SECURITY_REGISTERABLE=True,
     )
 
     # Initialize plugins
     db.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
+
+    from chemovar.users.models import User, Role
+
+    user_datastore = SQLAlchemySessionUserDatastore(db, User, Role)
+    security.init_app(app, user_datastore, register_blueprint=True)
 
     with app.app_context():
         # Import models

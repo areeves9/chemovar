@@ -13,6 +13,7 @@ from flask import (
     request,
 )
 
+
 # Create Flask Blueprint object
 strain_bp = Blueprint(
     'strain_bp',
@@ -21,6 +22,7 @@ strain_bp = Blueprint(
     static_folder='static',
     static_url_path='/strains'
 )
+
 
 # Routes
 @strain_bp.route('/', methods=['GET'])

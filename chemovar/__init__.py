@@ -1,20 +1,19 @@
+from flask_mail import Mail
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
 import os
 from dotenv import load_dotenv
 
-from flask import Flask
-
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
-
-from flask_security import Security, SQLAlchemySessionUserDatastore
+from flask_security import Security, SQLAlchemyUserDatastore
 
 # Global libraries
 db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
-
-
+mail = Mail()
 # Flask-Security
 security = Security()
 
@@ -33,17 +32,24 @@ def create_app():
         SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URL'),
         SQLALCHEMY_TRACK_MODIFICATIONS=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
         SECURITY_PASSWORD_SALT=os.getenv('SECURITY_PASSWORD_SALT'),
-        SECURITY_REGISTERABLE=True,
+        MAIL_DEFAULT_SENDER=os.getenv('MAIL_DEFAULT_SENDER'),
+        MAIL_PORT=os.getenv('MAIL_PORT'),
+        MAIL_SERVER=os.getenv('MAIL_SERVER'),
+        MAIL_USE_SSL=os.getenv('MAIL_USE_SSL'),
+        MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
+        MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
+        SECURITY_REGISTERABLE = True,
     )
 
     # Initialize plugins
     db.init_app(app)
+    mail.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
 
     from chemovar.users.models import User, Role
 
-    user_datastore = SQLAlchemySessionUserDatastore(db, User, Role)
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore, register_blueprint=True)
 
     with app.app_context():

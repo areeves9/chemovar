@@ -4,7 +4,7 @@ from flask_security import UserMixin, RoleMixin
 # The many-to-many helper table
 # to relate Role and User models.
 roleusers = db.Table(
-    'role_users',
+    'roles_users',
     db.Column(
         'user_id', db.Integer,
         db.ForeignKey('user.id'),

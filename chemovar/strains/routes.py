@@ -13,6 +13,8 @@ from flask import (
     request,
 )
 
+from flask_security import login_required
+
 
 # Create Flask Blueprint object
 strain_bp = Blueprint(
@@ -58,6 +60,7 @@ def strain(id):
 
 
 @strain_bp.route('/strains/add/', methods=['GET', 'POST'])
+@login_required
 def add_strain():
     """
     CREATE A COMPOUND AND SAVE TO THE DB.

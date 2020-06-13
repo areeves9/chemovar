@@ -38,7 +38,10 @@ def create_app():
         MAIL_USE_SSL=os.getenv('MAIL_USE_SSL'),
         MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
         MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
-        SECURITY_REGISTERABLE = True,
+        SECURITY_CHANGEABLE=True,
+        SECURITY_TRACKABLE=True,
+        SECURITY_REGISTERABLE=True,
+        SECURITY_SEND_REGISTER_EMAIL=True,
     )
 
     # Initialize plugins

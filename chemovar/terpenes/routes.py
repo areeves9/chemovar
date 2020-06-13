@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask_security import login_required
 from .views import create_terpene, get_terpene_list
 
 
@@ -8,6 +9,7 @@ terpene_bp = Blueprint(
     static_folder='static',
     static_url_path='/terpenes'
 )
+
 
 
 # ROUTES
@@ -20,5 +22,6 @@ def terpenes():
 
 
 @terpene_bp.route('/terpenes/add/', methods=['GET', 'POST'])
+@login_required
 def add_terpene():
     return create_terpene()

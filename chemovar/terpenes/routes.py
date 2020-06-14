@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask_security import login_required
+from flask_security import roles_required
 from .views import create_terpene, get_terpene_list
 
 
@@ -21,7 +21,7 @@ def terpenes():
     return get_terpene_list()
 
 
+@roles_required('Superuser', 'Admin')
 @terpene_bp.route('/terpenes/add/', methods=['GET', 'POST'])
-@login_required
 def add_terpene():
     return create_terpene()

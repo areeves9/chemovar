@@ -13,7 +13,7 @@ from flask import (
     request,
 )
 
-from flask_security import login_required
+from flask_security import roles_required
 
 
 # Create Flask Blueprint object
@@ -59,8 +59,8 @@ def strain(id):
     return get_strain_object(id)
 
 
+@roles_required('Superuser', 'Admin')
 @strain_bp.route('/strains/add/', methods=['GET', 'POST'])
-@login_required
 def add_strain():
     """
     CREATE A COMPOUND AND SAVE TO THE DB.

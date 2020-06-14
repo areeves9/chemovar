@@ -30,6 +30,9 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+    def __repr__(self):
+        return f"<Role {self.name}>"
+
 
 class User(db.Model, UserMixin):
     '''
@@ -51,3 +54,6 @@ class User(db.Model, UserMixin):
     fs_uniquifier = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
+
+    def __repr__(self):
+        return f"<User {self.email}>"

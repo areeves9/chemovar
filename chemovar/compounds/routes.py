@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask_security import login_required
+from flask_security import roles_required
 from .views import (
     create_compound,
     get_compound_list,
@@ -16,8 +16,8 @@ compound_bp = Blueprint(
 
 
 #ROUTES
+@roles_required('Superuser', 'Admin')
 @compound_bp.route('/compounds/add/', methods=['POST', 'GET'])
-@login_required
 def add_compound():
     """
     CREATE A COMPOUND AND SAVE TO THE DB.

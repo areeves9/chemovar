@@ -7,4 +7,3 @@ from flask import (
 @security.route('/register', methods=['GET'])
 def register():
     return render_template('security/register_user.html')
-    

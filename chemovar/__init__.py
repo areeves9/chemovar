@@ -2,6 +2,7 @@ import os
 from flask import (
     Flask,
 )
+from whitenoise import WhiteNoise
 from flask_mail import Mail
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
@@ -54,7 +55,14 @@ def create_app():
     mail.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
-    
+
+    app.wsgi_app = WhiteNoise(app.wsgi_app)
+    my_static_folders = (
+        'strains/static/strains/',
+    )
+    for static in my_static_folders:
+        app.wsgi_app.add_files(static)
+
     from chemovar.users.models import User, Role
     from chemovar.compounds.models import Compound
     from chemovar.terpenes.models import Terpene

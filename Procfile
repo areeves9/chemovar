@@ -1,1 +1,1 @@
-web: gunicorn app.app:app
+web: gunicorn "chemovar:create_app()"

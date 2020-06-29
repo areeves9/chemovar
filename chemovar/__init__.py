@@ -1,9 +1,6 @@
 import os
 from flask import (
     Flask,
-    redirect,
-    request,
-    url_for
 )
 from flask_mail import Mail
 from flask_admin import Admin, AdminIndexView

@@ -11,7 +11,7 @@ cffi==1.13.2
 chardet==3.0.4
 Click==7.0
 colour==0.1.5
-cryptography==2.8
+cryptography==3.2
 decorator==4.4.1
 dnspython==1.16.0
 dominate==2.4.0
